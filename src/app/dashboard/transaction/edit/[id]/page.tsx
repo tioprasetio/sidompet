@@ -5,7 +5,7 @@ export const dynamic = "force-dynamic";
 import TransactionForm from "@/pages/TransactionForm";
 import { fetchTransactionById, editTransaction } from "@/services/transaction";
 import { useParams, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Modal from "@/ui/Modal";
 import LoadingSpinnerScreen from "@/ui/LoadingSpinnerScreen";
 import { ModalProps } from "@/interfaces/IModal";
@@ -21,7 +21,7 @@ export default function EditTransactionPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [modal, setModal] = useState<ModalProps | null>(null);
 
-  const loadTransaction = async () => {
+  const loadTransaction = useCallback(async () => {
     if (!id || typeof id !== "string" || isNaN(Number(id))) {
       return;
     }
@@ -46,13 +46,13 @@ export default function EditTransactionPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [id]);
 
   useEffect(() => {
     if (id && typeof id === "string" && !isNaN(Number(id))) {
       loadTransaction();
     }
-  }, [id]);
+  }, [id, loadTransaction]);
 
   const handleSubmit = async (form: TransactionFormData) => {
     setIsSubmitting(true);
