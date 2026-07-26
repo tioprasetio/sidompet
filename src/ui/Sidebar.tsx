@@ -36,10 +36,11 @@ const Sidebar = () => {
         if (name.length > 0) {
           setInitial(name[0].toUpperCase());
         }
-      } catch (error: any) {
+      } catch (error) {
         console.error("Profile fetch error:", error);
+        const err = error as { response?: { status?: number }; message?: string };
         // Hanya logout dan redirect jika status response 401 (Unauthorized) / token expired
-        if (error?.response?.status === 401 || error?.message?.includes("401")) {
+        if (err?.response?.status === 401 || err?.message?.includes("401")) {
           logout();
           router.push("/");
         }
