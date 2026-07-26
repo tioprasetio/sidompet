@@ -1,5 +1,7 @@
 "use client";
 
+export const dynamic = "force-dynamic";
+
 import TransactionForm from "@/pages/TransactionForm";
 import { fetchTransactionById, editTransaction } from "@/services/transaction";
 import { useParams, useRouter } from "next/navigation";
