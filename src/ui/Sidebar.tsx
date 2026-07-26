@@ -20,10 +20,12 @@ const Sidebar = () => {
 
   useEffect(() => {
     setPathname(rawPath);
+  }, [rawPath]);
 
+  useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const token = localStorage.getItem("token");
+        const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
         if (!token) {
           router.push("/");
           return;
@@ -42,7 +44,7 @@ const Sidebar = () => {
     };
 
     fetchProfile();
-  }, [rawPath, router]);
+  }, [router]);
 
   if (!pathname) return null;
 

@@ -19,17 +19,11 @@ export default function EditTransactionPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [modal, setModal] = useState<ModalProps | null>(null);
 
-  useEffect(() => {
-    loadTransaction();
-  }, [id]);
-
-  console.log(id);
-
-  if (!id || typeof id !== "string") {
-    return <>Invalid Transaction ID</>;
-  }
-
   const loadTransaction = async () => {
+    if (!id || typeof id !== "string" || isNaN(Number(id))) {
+      return;
+    }
+
     try {
       const res = await fetchTransactionById(Number(id));
       const tx = res.data;
@@ -51,6 +45,12 @@ export default function EditTransactionPage() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (id && typeof id === "string" && !isNaN(Number(id))) {
+      loadTransaction();
+    }
+  }, [id]);
 
   const handleSubmit = async (form: TransactionFormData) => {
     setIsSubmitting(true);
